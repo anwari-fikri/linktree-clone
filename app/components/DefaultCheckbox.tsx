@@ -1,12 +1,24 @@
 'use client';
 
 import { Checkbox } from '@/components/ui/checkbox';
-import React, { useState } from 'react';
+import React from 'react';
 
-const DefaultCheckbox = ({ instruction }: { instruction: string }) => {
-    const [uniqueId] = useState(
-        `checkbox-${Math.random().toString(36).substring(7)}`,
-    );
+interface DefaultCheckboxProps {
+    id: string;
+    instruction: string;
+    checked?: boolean;
+    onCheckChange?: (id: string, checked: boolean) => void;
+}
+
+const DefaultCheckbox = ({
+    id,
+    instruction,
+    checked = false,
+    onCheckChange,
+}: DefaultCheckboxProps) => {
+    const handleCheckedChange = (newChecked: boolean) => {
+        onCheckChange?.(id, newChecked);
+    };
 
     return (
         // <div className="flex items-center mb-1">
@@ -23,8 +35,12 @@ const DefaultCheckbox = ({ instruction }: { instruction: string }) => {
         //     </label>
         // </div>
         <div className="flex items-center space-x-2">
-            <Checkbox id={uniqueId} />
-            <label htmlFor={uniqueId}>
+            <Checkbox
+                id={id}
+                checked={checked}
+                onCheckedChange={handleCheckedChange}
+            />
+            <label htmlFor={id}>
                 <p>{instruction}</p>
             </label>
         </div>
